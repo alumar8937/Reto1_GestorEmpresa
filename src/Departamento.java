@@ -2,8 +2,8 @@
 
 public class Departamento {
 
-    private int id;
-    private String nombre;
+    final private int id;
+    final private String nombre;
 
     public Departamento(int id, String nombre) {
 
