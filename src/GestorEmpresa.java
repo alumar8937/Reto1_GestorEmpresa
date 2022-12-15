@@ -1,6 +1,5 @@
 // Author: Pedro Marín Sanchis
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -15,14 +14,21 @@ public class GestorEmpresa {
 
     public static void probarClaseCSV() { // Author: Pedro Marín Sanchis
 
-        DocumentoCSV document = null;
+        DocumentoCSV Datos_Empresa = null;
+        DocumentoCSV Datos_Personales = null;
+        DocumentoCSV TestExportar = null;
+
         try {
-            document = new DocumentoCSV(new File("CSV/Datos_Empresa.csv"), ";");
-            System.out.println(document.obtenerValor(4,5));
-            document.cambiarValor(4,5,"Jose");
-            System.out.println(document.obtenerValor(4,5));
-            System.out.println(document.obtenerContenidoTextoPlano());
-            exportarTexto(escogerArchivo(true), document.obtenerContenidoTextoPlano());
+            Datos_Empresa = new DocumentoCSV(new File("CSV/Datos_Empresa.csv"), ";");
+            Datos_Personales = new DocumentoCSV(new File("CSV/Datos_Personales.csv"), ";");
+            TestExportar = new DocumentoCSV("", ";");
+            cargarEmpleados(Datos_Empresa, Datos_Personales);
+            for (Empleado i: empleados) {
+                System.out.println(i.getEmail());
+                TestExportar.anyadirTuple(i.toStringArray());
+            }
+            TestExportar.exportarComoArchivo(new File("OhmyGOood"));
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -77,7 +83,7 @@ public class GestorEmpresa {
 
     }
 
-    private static File escogerArchivo(boolean avisarSiExiste) { // Author: Pedro Marín Sanchis
+    private static File escogerArchivo(boolean avisarSiExiste, String mensaje) { // Author: Pedro Marín Sanchis
 
         boolean entradaCorrecta = false;
         File archivo = null;
@@ -85,7 +91,7 @@ public class GestorEmpresa {
         while (!entradaCorrecta) {
 
             limpiarPantalla();
-            System.out.print("Escribe la ruta del archivo: ");
+            System.out.print(mensaje);
             archivo = new File(inputValue.nextLine());
             if (archivo.exists() && avisarSiExiste) {
 
@@ -107,16 +113,66 @@ public class GestorEmpresa {
 
     }
 
-    private static void exportarTexto(File destino, String contenido) { // Author: Pedro Marín Sanchis
+    private static void cargarEmpleados(DocumentoCSV Datos_Empresa, DocumentoCSV Datos_Personales) { // Author: Pedro Marín Sanchis
 
-        try {
-            FileWriter writer = new FileWriter(destino);
-            writer.write(contenido);
-            writer.close();
-        } catch (IOException e) {
-            mostrarError("Error al exportar!");
+        ArrayList<Empleado> lista = new ArrayList<>(1);
+
+        if (Datos_Personales.obtenerCantidadDeCampos() > 0 && Datos_Empresa.obtenerCantidadDeCampos() > 0) {
+
+            for (int i = 1; i < Datos_Personales.obtenerCantidadDeCampos() - 1; i++) {
+
+                int id_usuario = Integer.parseInt(Datos_Personales.obtenerValor(i,0));
+                int id_departamento = Integer.parseInt(Datos_Empresa.obtenerValor(i,1));
+                String NIF = Datos_Personales.obtenerValor(i, 1);
+                String nombre = Datos_Personales.obtenerValor(i, 2);
+                String apellido1 = Datos_Personales.obtenerValor(i, 3);
+                String apellido2 = Datos_Personales.obtenerValor(i, 4);
+                int num_SegSocial = 0;
+                String antiguedad = Datos_Empresa.obtenerValor(i, 2);
+                String cat_GrupoProfesional = Datos_Empresa.obtenerValor(i, 3);
+                int grupo_Cotizacion = Integer.parseInt(Datos_Empresa.obtenerValor(i, 4));
+                String email = Datos_Empresa.obtenerValor(i, 5);
+
+                lista.add(new Empleado(id_usuario, id_departamento, NIF, nombre, apellido1, apellido2, num_SegSocial, antiguedad, cat_GrupoProfesional, grupo_Cotizacion, email));
+
+            }
+
+            empleados = lista;
+
+        } else {
+
+            mostrarError("Los archivos no son válidos.");
+
         }
 
     }
+
+    private static void cargarDepartamentos(DocumentoCSV Departamento) { // Author: Pedro Marín Sanchis
+
+        ArrayList<Departamento> lista = new ArrayList<>(1);
+
+        if (Departamento.obtenerCantidadDeCampos() > 0) {
+
+            for (int i = 1; i < Departamento.obtenerCantidadDeCampos() - 1; i++) {
+
+                lista.add(new Departamento(Integer.parseInt(Departamento.obtenerValor(i, 0)), Departamento.obtenerValor(i, 1)));
+
+            }
+
+            departamentos = lista;
+
+        } else {
+
+            mostrarError("Los archivos no son válidos.");
+
+        }
+
+    }
+
+    //private static DocumentoCSV crearDepartamentoCSV() { // Author: Pedro Marín Sanchis
+
+
+
+   //}
 
 }

@@ -14,10 +14,7 @@ ición en la fila y su posición en la columna.
 
  */
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class DocumentoCSV {
@@ -32,6 +29,16 @@ public class DocumentoCSV {
 
     }
 
+    public DocumentoCSV(String contenido, String delimitador) throws IOException {
+
+        this.delimitador = delimitador;
+        if (contenido.length() > 0) {
+            this.tuples = generarTuples(contenido);
+        } else {
+            this.tuples = new ArrayList<>(1);
+        }
+
+    }
     private String generarContenidoTextoPlano(File archivo) throws IOException { // Devuelve el contenido del fichero en un String.
 
         BufferedReader reader = new BufferedReader(new FileReader(archivo));
@@ -61,6 +68,12 @@ public class DocumentoCSV {
         }
 
         return tuples;
+
+    }
+
+    public void anyadirTuple(String[] tuple) {
+
+        this.tuples.add(tuple);
 
     }
 
@@ -101,6 +114,14 @@ public class DocumentoCSV {
         }
 
         return builder.toString();
+
+    }
+
+    public void exportarComoArchivo(File destino) throws IOException {
+
+        FileWriter writer = new FileWriter(destino);
+        writer.write(this.obtenerContenidoTextoPlano());
+        writer.close();
 
     }
 

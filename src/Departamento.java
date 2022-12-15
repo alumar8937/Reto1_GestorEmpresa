@@ -12,6 +12,10 @@ public class Departamento {
 
     }
 
+    public String[] toStringArray() {
+        return new String[]{String.valueOf(this.id), this.nombre};
+    }
+
     public int getId() {
         return id;
     }

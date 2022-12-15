@@ -2,6 +2,8 @@
 
 public class Empleado {
     final private int id_usuario;
+
+    private int id_departamento;
     private String NIF;
     private String nombre;
     private String apellido1;
@@ -12,9 +14,12 @@ public class Empleado {
     private int grupo_Cotizacion;
     private String email;
 
-    public Empleado(int id_usuario, String NIF, String nombre, String apellido1, String apellido2, int num_SegSocial, String antiguedad, String cat_GrupoProfesional, int grupo_Cotizacion, String email) {
+    public Empleado(int id_usuario, int id_departamento, String NIF, String nombre, String apellido1,
+                    String apellido2, int num_SegSocial, String antiguedad, String cat_GrupoProfesional,
+                    int grupo_Cotizacion, String email) {
 
         this.id_usuario = id_usuario;
+        this.id_departamento = id_departamento;
         this.NIF = NIF;
         this.nombre = nombre;
         this.apellido1 = apellido1;
@@ -27,8 +32,18 @@ public class Empleado {
 
     }
 
+    public String[] toStringArray() {
+        return new String[]{String.valueOf(this.id_usuario), String.valueOf(this.id_departamento),
+                this.NIF, this.nombre, this.apellido1, this.apellido2, String.valueOf(this.num_SegSocial),
+                this.antiguedad, this.cat_GrupoProfesional, String.valueOf(this.grupo_Cotizacion), this.email};
+    }
+
     public int getId_usuario() {
         return id_usuario;
+    }
+
+    public int getId_departamento() {
+        return id_departamento;
     }
 
     public String getNIF() {
@@ -67,6 +82,9 @@ public class Empleado {
         this.id_usuario = id_usuario;
     }*/
 
+    public void setId_departamento(int id_departamento) {
+        this.id_departamento = id_departamento;
+    }
     public void setNIF(String NIF) {
         this.NIF = NIF;
     }
