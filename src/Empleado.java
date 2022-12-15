@@ -1,4 +1,6 @@
-// Author: Pedro Marín Sanchis
+/*
+*@author Pedro Marín Sanchis
+ */
 
 public class Empleado {
     final private int id_usuario;
@@ -68,6 +70,10 @@ public class Empleado {
 
     public String getAntiguedad() {
         return antiguedad;
+    }
+
+    public String getCat_GrupoProfesional() {
+        return this.cat_GrupoProfesional;
     }
 
     public int getGrupo_Cotizacion() {

@@ -1,18 +1,17 @@
-// Author: Pedro Marín Sanchis
-
-/*
-
-DocumentoCSV es una clase para el tratamiento de archivos CSV, como argumentos para el constructor toma
-Un File (archivo) y un String (delimitador). El propio constructor genera una estructura tal que:
-
-ArrayList de String arrays. Cada String array es un tuple del archivo CSV, includio el primero, que es
-la cabecera. Cada String de un String array es un valor en concreto del archivo CSV, su índice indica
-la columna en la que se encuentra.
-
-Por lo tanto podemos acceder a cualquier valor de un archivo CSV mediante dos valores enteros. Su pos-
-ición en la fila y su posición en la columna.
-
- */
+/**
+* DocumentoCSV es una clase para el tratamiento de archivos CSV, como argumentos para el constructor toma
+* Un File (archivo) y un String (delimitador). El propio constructor genera una estructura tal que:
+*
+* ArrayList de String arrays. Cada String array es un tuple del archivo CSV, includio el primero, que es
+* la cabecera. Cada String de un String array es un valor en concreto del archivo CSV, su índice indica
+* la columna en la que se encuentra.
+*
+* Por lo tanto podemos acceder a cualquier valor de un archivo CSV mediante dos valores enteros. Su pos-
+* ición en la fila y su posición en la columna.
+*
+* @author Pedro Marín Sanchis
+*
+*/
 
 import java.io.*;
 import java.util.ArrayList;
@@ -77,6 +76,12 @@ public class DocumentoCSV {
 
     }
 
+    public void anyadirTuple(String tuple, String delimitador) {
+
+        anyadirTuple(tuple.split(delimitador));
+
+    }
+
     public String obtenerValor(int tuple, int columna) { // Devuelve el valor indicado (¡ LOS VALORES DE LA CABECERA DEL CSV SIGUEN ESTANDO !).
 
         return tuples.get(tuple)[columna];
@@ -103,12 +108,13 @@ public class DocumentoCSV {
 
         for (String[] i: tuples) {
 
-            for (String j: i) {
+            for (int j = 0; j < i.length - 1; j++) {
 
-                builder.append(j).append(delimitador);
+                builder.append(i[j]).append(delimitador);
 
             }
 
+            builder.append(i[i.length-1]);
             builder.append("\n");
 
         }
