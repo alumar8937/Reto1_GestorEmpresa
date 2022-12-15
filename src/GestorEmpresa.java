@@ -7,33 +7,12 @@ import java.io.File;
 public class GestorEmpresa {
 
     final private static Scanner inputValue = new Scanner(System.in);
+
+    final private static String delimitador_CSV = ";";
     private static ArrayList<Departamento> departamentos = new ArrayList<>(1);
     private static ArrayList<Empleado> empleados = new ArrayList<>(1);
 
     private static Boolean condicionDeSalida = false;
-
-    public static void probarClaseCSV() { // Author: Pedro Marín Sanchis
-
-        DocumentoCSV Datos_Empresa = null;
-        DocumentoCSV Datos_Personales = null;
-        DocumentoCSV TestExportar = null;
-
-        try {
-            Datos_Empresa = new DocumentoCSV(new File("CSV/Datos_Empresa.csv"), ";");
-            Datos_Personales = new DocumentoCSV(new File("CSV/Datos_Personales.csv"), ";");
-            TestExportar = new DocumentoCSV("", ";");
-            cargarEmpleados(Datos_Empresa, Datos_Personales);
-            for (Empleado i: empleados) {
-                System.out.println(i.getEmail());
-                TestExportar.anyadirTuple(i.toStringArray());
-            }
-            TestExportar.exportarComoArchivo(new File("OhmyGOood"));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 
     public static void main(String[] args) { // Author: Raúl Simarro Navarro
 
@@ -44,8 +23,6 @@ public class GestorEmpresa {
             limpiarPantalla();
 
        }
-
-        probarClaseCSV();
 
         inputValue.close();
 
@@ -153,7 +130,7 @@ public class GestorEmpresa {
 
         if (Departamento.obtenerCantidadDeCampos() > 0) {
 
-            for (int i = 1; i < Departamento.obtenerCantidadDeCampos() - 1; i++) {
+            for (int i = 1; i < Departamento.obtenerCantidadDeCampos(); i++) {
 
                 lista.add(new Departamento(Integer.parseInt(Departamento.obtenerValor(i, 0)), Departamento.obtenerValor(i, 1)));
 
@@ -169,10 +146,24 @@ public class GestorEmpresa {
 
     }
 
-    //private static DocumentoCSV crearDepartamentoCSV() { // Author: Pedro Marín Sanchis
+    private static DocumentoCSV crearDepartamentoCSV() throws IOException { // Author: Pedro Marín Sanchis
 
+        DocumentoCSV documento = new DocumentoCSV("", delimitador_CSV);
 
+        if (departamentos.size() > 0) {
 
-   //}
+            for (Departamento i: departamentos) {
+                documento.anyadirTuple(new String[]{String.valueOf(i.getId()), i.getNombre()});
+            }
+
+        } else {
+
+            mostrarError("Los archivos no son válidos.");
+
+        }
+
+        return documento;
+
+    }
 
 }
