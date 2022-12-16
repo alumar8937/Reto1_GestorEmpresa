@@ -615,16 +615,38 @@ public class GestorEmpresa {
             int id_usuario = leerEntero("Introduce la id del empleado al que quieres modificar.");
             for (Empleado empleado : empleados) {
                 if(id_usuario == empleado.getId_usuario()){
-                    int id_departamento_empleado = leerEntero("Introduce la nueva id de departamento.");
-                    String fecha_antiguedad_empleado = leerCadena("Introduce la nueva fecha de antiguedad. Ejemplo(12/12/2012)");
-                    String grupopro_fesional_empleado = leerCadena("Introduce el nuevo grupo profesional al que pertenece.");
-                    int grupo_cotizacion_empleado = leerEntero("Introduce el nuevo grupo de cotización al que pertenece.");
-                    String email_empleado = leerCadena("Introduce el nuevo email para este empleado");
-                    empleado.setId_departamento(id_departamento_empleado);
-                    empleado.setAntiguedad(fecha_antiguedad_empleado);
-                    empleado.setCat_GrupoProfesional(grupopro_fesional_empleado);
-                    empleado.setGrupo_Cotizacion(grupo_cotizacion_empleado);
-                    empleado.setEmail(email_empleado);
+                    int id_departamento = leerEntero("Introduzca la id del departamento del empleado: ");
+                    String antiguedad = leerCadena("Introduzca la fecha en la que empezo a trabajar el empleado (Ejemplo: dd/mm/year): ");
+                    String cat_GrupoProfesional = leerCadena("Introduzca la categoria del grupo profesional del empleado: ");
+                    int grupo_Cotizacion = leerEntero("Introduzca el grupo de cotización del empleado: ");
+                    String email = leerCadena("Introduzca el email del usuario: ");
+                    empleado.setId_departamento(id_departamento);
+                    empleado.setAntiguedad(antiguedad);
+                    empleado.setCat_GrupoProfesional(cat_GrupoProfesional);
+                    empleado.setGrupo_Cotizacion(grupo_Cotizacion);
+                    empleado.setEmail(email);
+                }
+            }
+        }catch (Exception e){
+            mostrarError("Esta id no existe.");
+        }
+    }
+
+    private static void modificarDatosPersonales() { //Author: Javier Blasco
+        try {
+            int id_usuario = leerEntero("Introduce la id del empleado al que quieres modificar.");
+            for (Empleado empleado : empleados) {
+                if(id_usuario == empleado.getId_usuario()){
+                    String NIF = leerCadena("Introduzca el NIF del empleado: ").toUpperCase();
+                    String nombre = leerCadena("Introduzca el nombre del empleado: ").toUpperCase();
+                    String apellido1 = leerCadena("Introduzca el primer apellido del empleado: ").toUpperCase();
+                    String apellido2 = leerCadena("Introduzca el segundo apellido del empleado: ").toUpperCase();
+                    int num_SegSocial = leerEntero("Introduzca el numero de la SS del empleado: ");
+                    empleado.setNIF(NIF);
+                    empleado.setNombre(nombre);
+                    empleado.setApellido1(apellido1);
+                    empleado.setApellido2(apellido2);
+                    empleado.setNum_SegSocial(num_SegSocial);
                 }
             }
         }catch (Exception e){
