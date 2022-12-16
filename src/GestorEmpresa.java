@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
@@ -36,7 +37,15 @@ public class GestorEmpresa {
             mostrarError("No se ha podido cargar.");
         }
 
-        // Prueba de exportado
+        while (!condicionDeSalida) {
+
+            limpiarPantalla();
+            mostrarMenu();
+            limpiarPantalla();
+
+       }
+
+        // Exportado de CSV
 
         try {
             crearCategoriaCSV().exportarComoArchivo(new File("Export/Categoria.csv"));
@@ -49,16 +58,20 @@ public class GestorEmpresa {
             mostrarError("No se ha podido exportar.");
         }
 
-        while (!condicionDeSalida) {
-
-            limpiarPantalla();
-            mostrarMenu();
-            limpiarPantalla();
-
-       }
-
         inputValue.close();
 
+    }
+
+    private static String leerCadena(String mensaje) { //Author: David Serna
+        System.out.println(mensaje);
+        return inputValue.nextLine();
+    }
+
+    private static int leerEntero(String mensaje) { //Author: David Serna
+        System.out.println(mensaje);
+        int entero = inputValue.nextInt();
+        inputValue.nextLine();
+        return entero;
     }
 
     private static void limpiarPantalla(){ // Author: Raúl Simarro Navarro
@@ -93,6 +106,7 @@ public class GestorEmpresa {
     private static void mostrarMenu() { // Author: Raúl Simarro Navarro
 
         System.out.println("| 0.- Salir |1.-|2.-|3.-|4.-|5.-|");
+        eliminarGrupoCot();
         condicionDeSalida = true;
 
     }
@@ -235,7 +249,7 @@ public class GestorEmpresa {
 
             for (int i = 1; i < Hores_extres.obtenerCantidadDeCampos(); i++) {
 
-                lista.add(new HoraExtra(Integer.parseInt(Hores_extres.obtenerValor(i, 0)), Hores_extres.obtenerValor(i, 1)));
+                lista.add(new HoraExtra(Integer.parseInt(Hores_extres.obtenerValor(i, 0)), Integer.parseInt(Hores_extres.obtenerValor(i, 1))));
 
             }
 
@@ -359,7 +373,7 @@ public class GestorEmpresa {
 
         if (horasExtras.size() > 0) {
             for (HoraExtra i : horasExtras) {
-                documento.anyadirTuple(new String[]{Integer.toString(i.getId_usuario()), i.getFecha()});
+                documento.anyadirTuple(new String[]{Integer.toString(i.getId_usuario()), Integer.toString(i.getFecha())});
             }
         } else {
 
@@ -374,10 +388,8 @@ public class GestorEmpresa {
 
         int id_pedido;
 
-        System.out.println("Introduzca la id del empleado:");
         try {
-            id_pedido = inputValue.nextInt();
-            inputValue.nextLine();
+            id_pedido = leerEntero("Introduzca la id del empleado:");
 
 
             for(Empleado empleado : empleados){
@@ -398,10 +410,8 @@ public class GestorEmpresa {
     private static void obtenerDatosEmpresaID() { //Author: Javier Blasco
         int id_solicitada;
 
-        System.out.println("Introduce la id del empleado");
         try {
-            id_solicitada = inputValue.nextInt();
-            inputValue.nextLine();
+            id_solicitada = leerEntero("Introduce la id del empleado");
 
             for(Empleado empleado : empleados){
                 if(id_solicitada == empleado.getId_usuario()){
@@ -420,12 +430,11 @@ public class GestorEmpresa {
     private static void consultarEmpleadosDepartamento() { //Author: David Serna
         String departamento;
         int id_dep = 0;
-        System.out.println("Introduzca el nombre del departamento:");
         try {
-            departamento = inputValue.nextLine().toUpperCase();
+            departamento = leerCadena("Introduzca el nombre del departamento:");
 
             for (Departamento dep : departamentos){
-                if(departamento.equals(dep.getNombre())){
+                if(departamento.equalsIgnoreCase(dep.getNombre())){
                     id_dep = dep.getId();
                 }
             }
@@ -490,31 +499,19 @@ public class GestorEmpresa {
     private static void agregarDatosUsuario(){ //Author: David Serna
         try {
             boolean check = false;
-            System.out.println("Introduzca la id del departamento del empleado: ");
-            int id_departamento = inputValue.nextInt();
-            inputValue.nextLine();
-            System.out.println("Introduzca el NIF del empleado: ");
-            String NIF = inputValue.nextLine();
-            System.out.println("Introduzca el nombre del empleado: ");
-            String nombre = inputValue.nextLine();
-            System.out.println("Introduzca el primer apellido del empleado: ");
-            String apellido1 = inputValue.nextLine();
-            System.out.println("Introduzca el segundo apellido del empleado: ");
-            String apellido2 = inputValue.nextLine();
-            System.out.println("Introduzca el numero de la SS del empleado: ");
-            int num_SegSocial = inputValue.nextInt();
-            inputValue.nextLine();
-            System.out.println("Introduzca la fecha en la que empezo a trabajar el empleado (Ejemplo: dd/mm/year): ");
-            String antiguedad = inputValue.nextLine();
-            System.out.println("Introduzca la categoria del grupo profesional del empleado: ");
-            String cat_GrupoProfesional = inputValue.nextLine();
-            System.out.println("Introduzca el grupo de cotización del empleado: ");
-            int grupo_Cotizacion = inputValue.nextInt();
-            inputValue.nextLine();
-            System.out.println("Introduzca el email del usuario: ");
-            String email = inputValue.nextLine();
+            int id_departamento = leerEntero("Introduzca la id del departamento del empleado: ");
+            String NIF = leerCadena("Introduzca el NIF del empleado: ").toUpperCase();
+            String nombre = leerCadena("Introduzca el nombre del empleado: ").toUpperCase();
+            String apellido1 = leerCadena("Introduzca el primer apellido del empleado: ").toUpperCase();
+            String apellido2 = leerCadena("Introduzca el segundo apellido del empleado: ").toUpperCase();
+            int num_SegSocial = leerEntero("Introduzca el numero de la SS del empleado: ");
+            String antiguedad = leerCadena("Introduzca la fecha en la que empezo a trabajar el empleado (Ejemplo: dd/mm/year): ");
+            String cat_GrupoProfesional = leerCadena("Introduzca la categoria del grupo profesional del empleado: ");
+            int grupo_Cotizacion = leerEntero("Introduzca el grupo de cotización del empleado: ");
+            String email = leerCadena("Introduzca el email del usuario: ");
 
-            mostrarMensaje("NIF del empleado: " + NIF +
+
+            if(!mostrarPeticionDeConfirmacion("NIF del empleado: " + NIF +
                     "\nNombre del empleado: " + nombre +
                     "\nPrimer apellido del empleado: " + apellido1 +
                     "\nSegundo apellido del empleado: " + apellido2 +
@@ -523,14 +520,10 @@ public class GestorEmpresa {
                     "\nAntiguedad del empleado: " + antiguedad +
                     "\nCategoría profesional al que pertence: " + cat_GrupoProfesional +
                     "\nGrupo de cotización al que pertenece: " + grupo_Cotizacion +
-                    "\nEmail del empleado: " + email);
-
-            System.out.println("Los datos son correctos (Y/N):");
-            if(inputValue.next().toUpperCase().equals("Y")) {
-                check = true;
-            }else{
+                    "\nEmail del empleado: " + email)) {
                 return;
             }
+
             int indicemax = 0;
             for(Empleado empleado : empleados){
                 if(empleado.getId_usuario() > indicemax){
@@ -553,18 +546,13 @@ public class GestorEmpresa {
     private static void agregarDatosGrupoCotizacion() { //Author: David Serna
         try {
             boolean check = false;
-            System.out.println("Introduzca el sueldo del base del grupo cotización: ");
-            int sueldo_grupcot = inputValue.nextInt();
-            inputValue.nextLine();
+            int sueldo_grupcot = leerEntero("Introduzca el sueldo del base del grupo cotización: ");
 
-            mostrarMensaje("Sueldo base del grupo_cot: " + sueldo_grupcot);
 
-            System.out.println("Los datos son correctos (Y/N):");
-            if(inputValue.next().toUpperCase().equals("Y")) {
-                check = true;
-            }else{
+            if(!mostrarPeticionDeConfirmacion("Sueldo base del grupo_cot: " + sueldo_grupcot)) {
                 return;
             }
+
             int indicemax = 0;
             for(GrupoCotizacion grupo_cot: gruposCotizacion){
                 if(grupo_cot.getId() > indicemax){
@@ -590,6 +578,78 @@ public class GestorEmpresa {
             }
         }catch (Exception e){
             System.out.println("Los datos no son validos.");
+        }
+    }
+    
+    private static void eliminarEmpleado(int id) { // Authro: Pedro Marín Sanchis
+        
+        for(int i = 0; i < empleados.size(); i++) {
+            
+            if (empleados.get(i).getId_usuario() == id) {
+
+                empleados.remove(i);
+                horasExtras.remove(i);
+                return;
+
+            }
+            
+        }
+        
+    }
+
+    private static void eliminarGrupoCot() { //Author: David Serna
+        int indice_grupocot = 0;
+        int grupo_cot = leerEntero("Introduzca la id del grupo de cotización que desea eliminar:");
+
+        if (!comprobarGrupoCot(grupo_cot)) {
+            mostrarMensaje("La id introducida no existe.");
+            return;
+        }
+
+        int contar_empleados = contarEmpleadosGrupoCot(grupo_cot);
+
+        if (contar_empleados != 0){
+            mostrarMensaje("Tienes " + contar_empleados + " empleados en el grupo de cotización "
+                    + grupo_cot + ", mientras tengas empleados no puedes eliminar el grupo de coti" +
+                    "zación.");
+            return;
+
+        }
+
+        for (GrupoCotizacion grupocot : gruposCotizacion){
+            if(grupocot.getId() == grupo_cot){
+                indice_grupocot = gruposCotizacion.indexOf(grupocot);
+            }
+        }
+        gruposCotizacion.remove(indice_grupocot);
+
+    }
+
+    private static int contarEmpleadosGrupoCot(int grupo_cot) {
+        int contar_empleados = 0;
+        for(Empleado empleado : empleados){
+            if(empleado.getGrupo_Cotizacion() == grupo_cot){
+                contar_empleados++;
+            }
+        }
+        return contar_empleados;
+    }
+
+    private static boolean comprobarGrupoCot(int grupo_cot) { //Author: David Serna
+        try {
+
+            for(GrupoCotizacion grupCot : gruposCotizacion){
+
+                if (grupCot.getId() == grupo_cot) {
+                    return true;
+                }
+
+            }
+            return false;
+
+        }catch (Exception e){
+            mostrarError("Esta id no existe.");
+            return false;
         }
     }
 }

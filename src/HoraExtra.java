@@ -4,9 +4,9 @@
 public class HoraExtra {
 
     final private int id_usuario;
-    final private String fecha;
+    final private int horas;
 
-    public HoraExtra(int id_usuario, String fecha) {
+    public HoraExtra(int id_usuario, int horas) {
 
         this.id_usuario = id_usuario;
         this.fecha = fecha;
@@ -17,7 +17,7 @@ public class HoraExtra {
         return this.id_usuario;
     }
 
-    public String getFecha() {
-        return this.fecha;
+    public int getFecha() {
+        return this.horas;
     }
 }
