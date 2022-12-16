@@ -1,1 +1,0 @@
-En este directorio residen los archivos CSV para las pruebas del programa.
