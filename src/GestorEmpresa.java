@@ -468,23 +468,25 @@ public class GestorEmpresa {
     }
 
     private static void costeSalarial() { //Author: Javier Blasco
+        int costeTotal = 0;
         try {
             for(GrupoCotizacion coste : gruposCotizacion) {
                 for (Empleado empleado : empleados) {
                     if (coste.getId() == empleado.getGrupo_Cotizacion()) {
-                        int costeTotal = coste.getSueldo_base() + coste.getSueldo_base();
-                        mostrarMensaje("Coste salarial de la empresa: " + costeTotal);
+                        costeTotal = costeTotal + coste.getSueldo_base();
                     }
                 }
             }
+            mostrarMensaje("Coste salarial de la empresa: " + costeTotal);
         } catch (Exception e) {
             mostrarError("Error");
         }
     }
 
-   private static void horasEXDepartamento() { //Author: Javier Blasco
-        /*String departamento;
+    private static void horasExtraDepartamento() { //Author: Javier Blasco
+        String departamento;
         int id_dep = 0;
+        int horasTotales = 0;
         System.out.println("Introduzca el nombre del departamento:");
         try {
             departamento = inputValue.nextLine().toUpperCase();
@@ -499,14 +501,15 @@ public class GestorEmpresa {
                 if(id_dep == empleado.getId_departamento()){
                     for(HoraExtra hora : horasExtras) {
                         if (empleado.getId_usuario() == hora.getId_usuario()) {
-                            int horasTotaless = hora.getFecha() + hora.getFecha();
+                            horasTotales = horasTotales + hora.getFecha();
                         }
                     }
                 }
             }
+            mostrarMensaje("Horas extras del departamento " + departamento + " " + horasTotales);
         } catch (Exception e) {
             mostrarError("Entrada no válida.");
-        }*/
+        }
     }
 
     private static void agregarDatosUsuario(){ //Author: David Serna
@@ -583,14 +586,25 @@ public class GestorEmpresa {
         }
     }
 
-    private static void modificarDatosPersonales() { //Author: Javier Blasco
+    private static void modificarDatosEmpresa() { //Author: Javier Blasco
         try {
+            int id_usuario = leerEntero("Introduce la id del empleado al que quieres modificar.");
             for (Empleado empleado : empleados) {
-                empleado.getId_usuario();
-
+                if(id_usuario == empleado.getId_usuario()){
+                    int id_departamento_empleado = leerEntero("Introduce la nueva id de departamento.");
+                    String fecha_antiguedad_empleado = leerCadena("Introduce la nueva fecha de antiguedad. Ejemplo(12/12/2012)");
+                    String grupopro_fesional_empleado = leerCadena("Introduce el nuevo grupo profesional al que pertenece.");
+                    int grupo_cotizacion_empleado = leerEntero("Introduce el nuevo grupo de cotización al que pertenece.");
+                    String email_empleado = leerCadena("Introduce el nuevo email para este empleado");
+                    empleado.setId_departamento(id_departamento_empleado);
+                    empleado.setAntiguedad(fecha_antiguedad_empleado);
+                    empleado.setCat_GrupoProfesional(grupopro_fesional_empleado);
+                    empleado.setGrupo_Cotizacion(grupo_cotizacion_empleado);
+                    empleado.setEmail(email_empleado);
+                }
             }
         }catch (Exception e){
-            System.out.println("Los datos no son validos.");
+            mostrarError("Esta id no existe.");
         }
     }
     
