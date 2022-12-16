@@ -7,6 +7,7 @@ import java.io.File;
 public class GestorEmpresa {
 
     private static Boolean condicionDeSalida = false;
+    private static Boolean salir = false;
     final private static Scanner inputValue = new Scanner(System.in);
     final private static String delimitador_CSV = ";";
 
@@ -70,9 +71,13 @@ public class GestorEmpresa {
 
     private static int leerEntero(String mensaje) { //Author: David Serna
         System.out.println(mensaje);
-        int entero = inputValue.nextInt();
-        inputValue.nextLine();
-        return entero;
+        try {
+            int entero = inputValue.nextInt();
+            inputValue.nextLine();
+            return entero;
+        }catch(Exception e){
+            return 0;
+        }
     }
 
     private static void limpiarPantalla(){ // Author: Raúl Simarro Navarro
@@ -107,11 +112,30 @@ public class GestorEmpresa {
 
     }
 
-    private static void mostrarMenu() { // Author: Raúl Simarro Navarro
+    private static void mostrarMenu() { // Author: Raúl Simarro Navarro, David Serna
 
-        System.out.println("| 0.- Salir |1.-|2.-|3.-|4.-|5.-|");
-        eliminarGrupoCot();
-        condicionDeSalida = true;
+        String textoMenu = "1.-Empleados \n2.-Departamentos \n3.-Grupos Cotización \n4.-Coste salarial empresa \n" +
+                "5.-Salir del programa \nIntroduzca una opción válida:";
+
+        switch(leerEntero(textoMenu)){
+            case 1:
+                menuEmpleado();
+                break;
+            case 2:
+                menuDepartamento();
+                break;
+            case 3:
+                menuGruposCot();
+                break;
+            case 4:
+                costeSalarial();
+                break;
+            case 5:
+                condicionDeSalida = true;
+                break;
+            default:
+                mostrarMensaje("Has introducido una opción no válida.");
+        }
 
     }
 
@@ -477,7 +501,7 @@ public class GestorEmpresa {
                     }
                 }
             }
-            mostrarMensaje("Coste salarial de la empresa: " + costeTotal);
+            mostrarMensaje("Coste salarial de la empresa: " + costeTotal + " €");
         } catch (Exception e) {
             mostrarError("Error");
         }
@@ -649,10 +673,10 @@ public class GestorEmpresa {
             }
         }
         gruposCotizacion.remove(indice_grupocot);
-
+        mostrarMensaje("Se ha eliminado el grupo de cotización correctamente.");
     }
 
-    private static int contarEmpleadosGrupoCot(int grupo_cot) {
+    private static int contarEmpleadosGrupoCot(int grupo_cot) { //Author: David Serna
         int contar_empleados = 0;
         for(Empleado empleado : empleados){
             if(empleado.getGrupo_Cotizacion() == grupo_cot){
@@ -668,6 +692,118 @@ public class GestorEmpresa {
             for(GrupoCotizacion grupCot : gruposCotizacion){
 
                 if (grupCot.getId() == grupo_cot) {
+                    return true;
+                }
+
+            }
+            return false;
+
+        }catch (Exception e){
+            mostrarError("Esta id no existe.");
+            return false;
+        }
+    }
+
+    private static void agregarDep() { // Author: Pedro Marín Sanchis
+
+        int id = leerEntero("Introduzca la ID del departamento:");
+
+        if (!comprobarDep(id)) {
+
+            departamentos.add(new Departamento(id, leerCadena("Introduzca el nombre del nuevo departamento:")));
+
+        } else {
+
+            mostrarError("No se ha encontrado el departamento.");
+
+        }
+
+    }
+
+    private static void modificarDep() { //Author: Pedro Marín Sanchis
+
+        int id = leerEntero("Introduzca la ID del departamento:");
+
+        if (comprobarDep(id)) {
+
+            for (Departamento i: departamentos) {
+
+                if (id == i.getId()) {
+
+                    i.setNombre(leerCadena("Introduzca el nuevo nombre de departamento:"));
+
+                }
+
+            }
+
+        } else {
+
+            mostrarError("No se ha encontrado el departamento.");
+
+        }
+
+    }
+
+    private static void eliminarDep() { //Author: David Serna
+        int indice_dep = 0;
+        String departamento = leerCadena("Introduzca el nombre del departamento que desea eliminar:");
+        int id_departamento =convertirNombreDepIdDep(departamento);
+        if (id_departamento == 0){
+            return;
+        }
+
+
+        if (!comprobarDep(id_departamento)) {
+            mostrarMensaje("El departamento introducido no existe.");
+            return;
+        }
+
+
+        int contar_empleados = contarEmpleadosDep(id_departamento);
+
+        if (contar_empleados != 0){
+            mostrarMensaje("Tienes " + contar_empleados + " empleados en el departamento "
+                    + departamento + ", mientras tengas empleados no puedes eliminar el departamento " +
+                    "reasigna los empleados a otro departamento antes de eliminarlo.");
+            return;
+
+        }
+
+        for (Departamento dep : departamentos){
+            if(dep.getId() == id_departamento){
+                indice_dep = departamentos.indexOf(dep);
+            }
+        }
+        departamentos.remove(indice_dep);
+        mostrarMensaje("Se ha eliminado el departamento correctamente.");
+
+    }
+    private static int convertirNombreDepIdDep(String departamento) { //Author: David Serna
+        for (Departamento dep : departamentos){
+            if(dep.getNombre().equalsIgnoreCase(departamento)){
+                return dep.getId();
+            }
+        }
+        System.out.println("No existe el departamento");
+        return 0;
+    }
+
+    private static int contarEmpleadosDep(int id_departamento) { //Author: David Serna
+        int contar_empleados = 0;
+        for(Empleado empleado : empleados){
+            if(empleado.getId_departamento() == id_departamento){
+                contar_empleados++;
+            }
+        }
+        return contar_empleados;
+    }
+
+    private static boolean comprobarDep(int id_departamento) { //Author: David Serna
+        try {
+
+            for(Departamento departamento : departamentos){
+
+                if (departamento.getId() == id_departamento) {
                     return true;
                 }
 
