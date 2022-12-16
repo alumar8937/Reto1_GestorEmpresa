@@ -11,11 +11,11 @@ public class GestorEmpresa {
     final private static Scanner inputValue = new Scanner(System.in);
     final private static String delimitador_CSV = ";";
 
-    private static ArrayList<Categoria> categorias = new ArrayList<>(1); //
+    private static ArrayList<Categoria> categorias = new ArrayList<>(1); // Categoria.csv
     private static ArrayList<Empleado> empleados = new ArrayList<>(1); // Datos_Empresa.csv + Datos_Personales.csv
     private static ArrayList<Departamento> departamentos = new ArrayList<>(1); // Departamento.csv
-    private static ArrayList<GrupoCotizacion> gruposCotizacion = new ArrayList<>(1); //
-    private static ArrayList<HoraExtra> horasExtras = new ArrayList<>(1);  //
+    private static ArrayList<GrupoCotizacion> gruposCotizacion = new ArrayList<>(1); // Grupo_Cotizacion.csv
+    private static ArrayList<HoraExtra> horasExtras = new ArrayList<>(1);  // Hores_exres.csv
 
     // CABECERAS CSV
 
@@ -25,40 +25,19 @@ public class GestorEmpresa {
     final private static String cabecera_Departamento = "id;Nombre";
     final private static String cabecera_Grupo_Cotizacion = "Id;sueldo_base";
     final private static String cabecera_Hores_extres = "id_usuario;hora";
+
     public static void main(String[] args) { // Author: Raúl Simarro Navarro
 
-        // Carga de datos hardcodeada
-
-        try {
-            cargarCategorias(new DocumentoCSV(new File("CSV/Categoria.csv"), delimitador_CSV));
-            cargarEmpleados(new DocumentoCSV(new File("CSV/Datos_Empresa.csv"), delimitador_CSV), new DocumentoCSV(new File("CSV/Datos_Personales.csv"), delimitador_CSV));
-            cargarDepartamentos(new DocumentoCSV(new File("CSV/Departamento.csv"), delimitador_CSV));
-            cargarGrupo_Cotizacion(new DocumentoCSV(new File("CSV/Grupo_Cotizacion.csv"), delimitador_CSV));
-            cargarHores_extres(new DocumentoCSV(new File("CSV/Hores_extres.csv"), delimitador_CSV));
-        } catch (IOException e) {
-            mostrarError("No se ha podido cargar.");
-        }
+        importarDatos();
 
         while (!condicionDeSalida) {
 
             limpiarPantalla();
             mostrarMenu();
-            limpiarPantalla();
 
-       }
-
-        // Exportado de CSV
-
-        try {
-            crearCategoriaCSV().exportarComoArchivo(new File("Export/Categoria.csv"));
-            crearDatos_EmpresaCSV().exportarComoArchivo(new File("Export/Datos_Empresa.csv"));
-            crearDatos_PersonalesCSV().exportarComoArchivo(new File("Export/Datos_Personales.csv"));
-            crearDepartamentoCSV().exportarComoArchivo(new File("Export/Departamento.csv"));
-            crearGrupo_CotizacionCSV().exportarComoArchivo(new File("Export/Grupo_Cotizacion.csv"));
-            crearHores_extresCSV().exportarComoArchivo(new File("Export/Hores_extres.csv"));
-        } catch (IOException e) {
-            mostrarError("No se ha podido exportar.");
         }
+
+        exportarDatos();
 
         inputValue.close();
 
@@ -135,6 +114,139 @@ public class GestorEmpresa {
                 break;
             default:
                 mostrarMensaje("Has introducido una opción no válida.");
+        }
+
+    }
+
+    private static void menuEmpleado() { //Author: David Serna
+        salir = false;
+        while(!salir){
+
+            limpiarPantalla();
+
+            String textoMenu = "1.-Consultar datos personales del trabajador por ID \n2.-Consultar datos de empresa del " +
+                    "trabajador por ID \n3.-Añadir datos personales y de empresa de un nuevo trabajador " +
+                    "\n4.-Modificar datos personales de un empleado por ID. \n5.-Modificar datos de empresa de un empleado por ID" +
+                    "\n6.-Volver a atras \nIntroduzca una opción válida:";
+
+            switch(leerEntero(textoMenu)){
+                case 1:
+                    obtenerDatosPersonalesID();
+                    break;
+                case 2:
+                    obtenerDatosEmpresaID();
+                    break;
+                case 3:
+                    agregarDatosUsuario();
+                    break;
+                case 4:
+                    modificarDatosPersonales();
+                    break;
+                case 5:
+                    modificarDatosEmpresa();
+                    break;
+                case 6:
+                    salir = true;
+                    break;
+                default:
+                    mostrarMensaje("Has introducido una opción no válida.");
+            }
+        }
+    }
+
+    private static void menuDepartamento() { //Author: David Serna
+        salir = false;
+        while(!salir){
+
+            limpiarPantalla();
+
+            String textoMenu = "1.-Consultar los datos de los empleados de un departamento " +
+                    "\n2.-Consultar la cantidad de horas extras segun departamento \n3.-Agregar departamento"+
+                    "\n4.-Modificar departamento \n5.-Eliminar departamento" +
+                    "\n6.-Volver a atras \nIntroduzca una opción válida:";
+
+            switch(leerEntero(textoMenu)){
+                case 1:
+                    consultarEmpleadosDepartamento();
+                    break;
+                case 2:
+                    horasExtraDepartamento();
+                    break;
+                case 3:
+                    agregarDep();
+                    break;
+                case 4:
+                    modificarDep();
+                    break;
+                case 5:
+                    eliminarDep();
+                    break;
+                case 6:
+                    salir = true;
+                    break;
+                default:
+                    mostrarMensaje("Has introducido una opción no válida.");
+            }
+        }
+    }
+
+    private static void menuGruposCot() { //Author: David Serna
+        salir = false;
+        while(!salir){
+
+            limpiarPantalla();
+
+            String textoMenu = "1.-Consultar la cantidad de trabajadores pertenecientes a un grupo de cotización" +
+                    "\n2.-Consultar la cantidad de horas extras segun grupo de cotización \n3.-Agregar grupo de cotización "+
+                    "\n4.-Eliminar grupo de cotización \n5.-Volver a atras \nIntroduzca una opción válida:";
+
+            switch(leerEntero(textoMenu)){
+                case 1:
+                    mostrarMensaje("En este grupo de cotización hay: " + contarEmpleadosGrupoCot(leerEntero("Introduce la id del grupo de cotización:"))+ " empleados.");
+                    break;
+                case 2:
+                    horasExtraGrupoCotizacion();
+                    break;
+                case 3:
+                    agregarDatosGrupoCotizacion();
+                    break;
+                case 4:
+                    eliminarGrupoCot();
+                    break;
+                case 5:
+                    salir = true;
+                    break;
+                default:
+                    mostrarMensaje("Has introducido una opción no válida.");
+            }
+        }
+    }
+
+    private static void importarDatos() { // Author: Pedro Marín Sanchis
+
+        try {
+            cargarCategorias(new DocumentoCSV(new File("CSV/Categoria.csv"), delimitador_CSV));
+            cargarEmpleados(new DocumentoCSV(new File("CSV/Datos_Empresa.csv"), delimitador_CSV), new DocumentoCSV(new File("CSV/Datos_Personales.csv"), delimitador_CSV));
+            cargarDepartamentos(new DocumentoCSV(new File("CSV/Departamento.csv"), delimitador_CSV));
+            cargarGrupo_Cotizacion(new DocumentoCSV(new File("CSV/Grupo_Cotizacion.csv"), delimitador_CSV));
+            cargarHores_extres(new DocumentoCSV(new File("CSV/Hores_extres.csv"), delimitador_CSV));
+        } catch (IOException e) {
+            mostrarError("No se ha podido cargar.");
+        }
+
+    }
+
+    private static void exportarDatos() { // Author: Pedro Marín Sanchis
+
+        try {
+            crearCategoriaCSV().exportarComoArchivo(new File("Export/Categoria.csv"));
+            crearDatos_EmpresaCSV().exportarComoArchivo(new File("Export/Datos_Empresa.csv"));
+            crearDatos_PersonalesCSV().exportarComoArchivo(new File("Export/Datos_Personales.csv"));
+            crearDepartamentoCSV().exportarComoArchivo(new File("Export/Departamento.csv"));
+            crearGrupo_CotizacionCSV().exportarComoArchivo(new File("Export/Grupo_Cotizacion.csv"));
+            crearHores_extresCSV().exportarComoArchivo(new File("Export/Hores_extres.csv"));
+        } catch (IOException e) {
+            mostrarError("No se ha podido exportar.");
         }
 
     }
@@ -408,7 +520,7 @@ public class GestorEmpresa {
         if (horasExtras.size() > 0) {
 
             for (HoraExtra i : horasExtras) {
-                documento.anyadirTuple(new String[]{Integer.toString(i.getId_usuario()), Integer.toString(i.getFecha())});
+                documento.anyadirTuple(new String[]{Integer.toString(i.getId_usuario()), Integer.toString(i.getHoras())});
             }
 
         } else {
@@ -507,6 +619,30 @@ public class GestorEmpresa {
         }
     }
 
+    private static void horasExtraGrupoCotizacion() { //Author: Pedro Marín Sanchis
+
+        int horasTotales = 0;
+        int id = leerEntero("Introduzca la ID del grupo de cotización:");
+        for (GrupoCotizacion i : gruposCotizacion) {
+
+            if(i.getId() == id) {
+
+                for(Empleado empleado : empleados) {
+                    if(id == empleado.getGrupo_Cotizacion()){
+                        for(HoraExtra hora : horasExtras) {
+                            if (empleado.getId_usuario() == hora.getId_usuario()) {
+                                horasTotales = horasTotales + hora.getHoras();
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+            mostrarMensaje("Horas extras del grupo de cotizacion " + id + ": " + horasTotales);
+
+    }
+
     private static void horasExtraDepartamento() { //Author: Javier Blasco
         String departamento;
         int id_dep = 0;
@@ -525,7 +661,7 @@ public class GestorEmpresa {
                 if(id_dep == empleado.getId_departamento()){
                     for(HoraExtra hora : horasExtras) {
                         if (empleado.getId_usuario() == hora.getId_usuario()) {
-                            horasTotales = horasTotales + hora.getFecha();
+                            horasTotales = horasTotales + hora.getHoras();
                         }
                     }
                 }

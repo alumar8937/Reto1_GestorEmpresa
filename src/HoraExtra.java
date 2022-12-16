@@ -17,7 +17,7 @@ public class HoraExtra {
         return this.id_usuario;
     }
 
-    public int getFecha() {
+    public int getHoras() {
         return this.horas;
     }
 }

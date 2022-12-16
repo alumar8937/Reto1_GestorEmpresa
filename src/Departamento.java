@@ -3,7 +3,7 @@
 public class Departamento {
 
     final private int id;
-    final private String nombre;
+    private String nombre;
 
     public Departamento(int id, String nombre) {
 
@@ -22,6 +22,10 @@ public class Departamento {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
 }
