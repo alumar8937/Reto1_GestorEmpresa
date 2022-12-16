@@ -9,7 +9,7 @@ public class HoraExtra {
     public HoraExtra(int id_usuario, int horas) {
 
         this.id_usuario = id_usuario;
-        this.fecha = fecha;
+        this.horas = horas;
 
     }
 

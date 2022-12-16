@@ -3,6 +3,7 @@ import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
+
 public class GestorEmpresa {
 
     private static Boolean condicionDeSalida = false;
@@ -22,7 +23,7 @@ public class GestorEmpresa {
     final private static String cabecera_Datos_Personales = "id_usuario;NIF;Nombre;Apellido1;Apellido2;num_SegSocial";
     final private static String cabecera_Departamento = "id;Nombre";
     final private static String cabecera_Grupo_Cotizacion = "Id;sueldo_base";
-    final private static String cabecera_Hores_extres = "id_usuario;data";
+    final private static String cabecera_Hores_extres = "id_usuario;hora";
     public static void main(String[] args) { // Author: Raúl Simarro Navarro
 
         // Carga de datos hardcodeada
@@ -95,10 +96,13 @@ public class GestorEmpresa {
             limpiarPantalla();
             System.out.print("[Aviso]: " + mensaje + "\n¿Deseas continuar? [Y/N]: ");
             switch (inputValue.nextLine().toUpperCase()) {
-                case "Y": return true;
-                case "N": return false;
+                case "Y":
+                    limpiarPantalla();
+                    return true;
+                case "N":
+                    limpiarPantalla();
+                    return false;
             }
-            limpiarPantalla();
         }
 
     }
@@ -241,7 +245,7 @@ public class GestorEmpresa {
 
     }
 
-    private static void cargarHores_extres(DocumentoCSV Hores_extres) {
+    private static void cargarHores_extres(DocumentoCSV Hores_extres) { // Author: Pedro Marín Sanchis
 
         ArrayList<HoraExtra> lista = new ArrayList<>(1);
 
@@ -270,9 +274,11 @@ public class GestorEmpresa {
         documento.anyadirTuple(cabecera_Categoria, delimitador_CSV);
 
         if (categorias.size() > 0) {
+
             for (Categoria i: categorias) {
                 documento.anyadirTuple(new String[]{i.getCat_GrupoProfesional()});
             }
+
         } else {
 
             mostrarError("Los archivos no son válidos.");
@@ -290,9 +296,11 @@ public class GestorEmpresa {
         documento.anyadirTuple(cabecera_Datos_Empresa, delimitador_CSV);
 
         if (empleados.size() > 0) {
+
             for (Empleado i: empleados) {
                 documento.anyadirTuple(new String[]{Integer.toString(i.getId_usuario()), Integer.toString(i.getId_departamento()), i.getAntiguedad(), i.getCat_GrupoProfesional(), Integer.toString(i.getGrupo_Cotizacion()), i.getEmail()});
             }
+
         } else {
 
             mostrarError("Los archivos no son válidos.");
@@ -352,9 +360,11 @@ public class GestorEmpresa {
         documento.anyadirTuple(cabecera_Grupo_Cotizacion, delimitador_CSV);
 
         if (departamentos.size() > 0) {
+
             for (GrupoCotizacion i: gruposCotizacion) {
                 documento.anyadirTuple(new String[]{Integer.toString(i.getId()), Integer.toString(i.getSueldo_base())});
             }
+
         } else {
 
             mostrarError("Los archivos no son válidos.");
@@ -372,9 +382,11 @@ public class GestorEmpresa {
         documento.anyadirTuple(cabecera_Hores_extres, delimitador_CSV);
 
         if (horasExtras.size() > 0) {
+
             for (HoraExtra i : horasExtras) {
                 documento.anyadirTuple(new String[]{Integer.toString(i.getId_usuario()), Integer.toString(i.getFecha())});
             }
+
         } else {
 
             mostrarError("Los archivos no son válidos.");
@@ -384,7 +396,8 @@ public class GestorEmpresa {
         return documento;
 
     }
-    private static void obtenerDatosPersonalesID() { // Author: David Serna Mateu
+
+    private static void obtenerDatosPersonalesID() { // Author: David Serna
 
         int id_pedido;
 
