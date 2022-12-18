@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
@@ -127,7 +126,7 @@ public class GestorEmpresa {
             String textoMenu = "1.-Consultar datos personales del trabajador por ID \n2.-Consultar datos de empresa del " +
                     "trabajador por ID \n3.-Añadir datos personales y de empresa de un nuevo trabajador " +
                     "\n4.-Modificar datos personales de un empleado por ID. \n5.-Modificar datos de empresa de un empleado por ID" +
-                    "\n6.-Volver a atras \nIntroduzca una opción válida:";
+                    "\n6.-Eliminar un empleado \n7.-Volver a atras \nIntroduzca una opción válida:";
 
             switch(leerEntero(textoMenu)){
                 case 1:
@@ -146,6 +145,10 @@ public class GestorEmpresa {
                     modificarDatosEmpresa();
                     break;
                 case 6:
+                    eliminarEmpleado();
+                    limpiarPantalla();
+                    break;
+                case 7:
                     salir = true;
                     break;
                 default:
@@ -710,7 +713,7 @@ public class GestorEmpresa {
             empleados.add(new Empleado(indicemax + 1,id_departamento,NIF,nombre,apellido1,apellido2,num_SegSocial,antiguedad,
                     cat_GrupoProfesional,grupo_Cotizacion,email));
 
-
+            horasExtras.add(new HoraExtra(indicemax + 1, 0));
         } catch (Exception e) {
 
             mostrarError("Entrada no válida.");
@@ -790,8 +793,10 @@ public class GestorEmpresa {
         }
     }
     
-    private static void eliminarEmpleado(int id) { // Authro: Pedro Marín Sanchis
-        
+    private static void eliminarEmpleado() { // Author: Pedro Marín Sanchis
+
+        int id = obtenerIDconNIF();
+
         for(int i = 0; i < empleados.size(); i++) {
             
             if (empleados.get(i).getId_usuario() == id) {
