@@ -802,13 +802,32 @@ public class GestorEmpresa {
             if (empleados.get(i).getId_usuario() == id) {
 
                 empleados.remove(i);
-                horasExtras.remove(i);
-                return;
+
+                for (int j = 0; j < horasExtras.size(); j++) {
+
+                    if (horasExtras.get(j).getId_usuario() == id) {
+                        horasExtras.remove(j);
+                        return;
+                    }
+
+                }
 
             }
             
         }
         
+    }
+
+    private static int obtenerIDconNIF() { // Author: Pedro Marín Sanchis
+
+        String NIF = leerCadena("Introduzca el NIF del empleado a eliminar: ");
+
+        for (Empleado i: empleados) {
+            if (i.getNIF().equalsIgnoreCase(NIF)) {
+                return i.getId_usuario();
+            }
+        }
+            return 0;
     }
 
     private static void eliminarGrupoCot() { //Author: David Serna
