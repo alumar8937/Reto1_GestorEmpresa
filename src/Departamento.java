@@ -1,4 +1,11 @@
-// Author: Pedro Marín Sanchis
+/**
+ * 
+ * Clase que define un departamento, con id y nombre.
+ * 
+ * @author Pedro Marín Sanchis 
+ * @version V.1
+ * @since 18/12/2022
+ */
 
 public class Departamento {
 

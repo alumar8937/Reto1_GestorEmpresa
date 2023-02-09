@@ -10,7 +10,8 @@
 * ición en la fila y su posición en la columna.
 *
 * @author Pedro Marín Sanchis
-*
+* @version V.1
+* @since 18/12/2022
 */
 
 import java.io.File;
@@ -25,6 +26,12 @@ public class DocumentoCSV {
     final private String delimitador;
     final private ArrayList<String[]> tuples;
 
+    /**
+     * Constructor de DocumentoCSV a partir de un objeto File
+     * @param archivo
+     * @param delimitador
+     * @throws IOException
+     */
     public DocumentoCSV(File archivo, String delimitador) throws IOException {
 
         this.delimitador = delimitador;
@@ -32,6 +39,11 @@ public class DocumentoCSV {
 
     }
 
+    /**
+     * Construcor de DocumentoCSV a partir de un String
+     * @param contenido
+     * @param delimitador
+     */
     public DocumentoCSV(String contenido, String delimitador) {
 
         this.delimitador = delimitador;
@@ -42,6 +54,13 @@ public class DocumentoCSV {
         }
 
     }
+
+    /**
+     * Obtiene el contenido en texto plano de un archivo y lo devuelve.
+     * @param archivo
+     * @return String
+     * @throws IOException
+     */
     private String generarContenidoTextoPlano(File archivo) throws IOException { // Devuelve el contenido del fichero en un String.
 
         BufferedReader reader = new BufferedReader(new FileReader(archivo));
@@ -60,6 +79,11 @@ public class DocumentoCSV {
 
     }
 
+    /**
+     * Genera y carga los tuples a partir del conenido en texto plano de un documento csv.
+     * @param contenidoTextoPlano
+     * @return ArrayList<String[]>
+     */
     private ArrayList<String[]> generarTuples(String contenidoTextoPlano) {
 
         ArrayList<String[]> tuples = new ArrayList<>(1);
@@ -74,25 +98,48 @@ public class DocumentoCSV {
 
     }
 
+    /**
+     * Añade un tuple al documento csv.
+     * Un tuple es un Array de Strings, cada valor del Array es uno de los campos del tuple.
+     * @param tuple
+     */
     public void anyadirTuple(String[] tuple) {
 
         this.tuples.add(tuple);
 
     }
 
+    /**
+     * Añade un tuple al documento csv. Es necesario especificar el delimitador por el que se dividirán los valores.
+     * Un tuple es un Array de Strings, cada valor del Array es uno de los campos del tuple.
+     * @param tuple
+     * @param delimitador
+     */
     public void anyadirTuple(String tuple, String delimitador) {
 
         anyadirTuple(tuple.split(delimitador));
 
     }
 
-    public String obtenerValor(int tuple, int columna) { // Devuelve el valor indicado (¡ LOS VALORES DE LA CABECERA DEL CSV SIGUEN ESTANDO !).
+    /**
+     * Devuelve el valor de la celda indicada (¡ LOS VALORES DE LA CABECERA DEL CSV SIGUEN ESTANDO !).
+     * @param tuple
+     * @param columna
+     * @return
+     */
+    public String obtenerValor(int tuple, int columna) {
 
         return tuples.get(tuple)[columna];
 
     }
 
-    public void cambiarValor(int fila, int columna, String valor) { // Devuelve el valor indicado (¡ LOS VALORES DE LA CABECERA DEL CSV SIGUEN ESTANDO !).
+    /**
+     * Cambia el valor de la celda indicada (¡ LOS VALORES DE LA CABECERA DEL CSV SIGUEN ESTANDO !).
+     * @param fila
+     * @param columna
+     * @param valor
+     */
+    public void cambiarValor(int fila, int columna, String valor) {
 
         String[] tupleModificado = tuples.get(fila);
         tupleModificado[columna] = valor;
@@ -100,13 +147,21 @@ public class DocumentoCSV {
 
     }
 
-    public int obtenerCantidadDeCampos() { // Devuelve la cantidad de campos (¡ LA CABECERA DEL CSV SIGUE ESTANDO !).
+    /**
+     * Devuelve la cantidad de campos (¡ LA CABECERA DEL CSV SIGUE ESTANDO !).
+     * @return int
+     */
+    public int obtenerCantidadDeCampos() {
 
         return tuples.size();
 
     }
 
-    public String obtenerContenidoTextoPlano() { // Devuelve el documento CSV como un String.
+    /**
+     * Devuelve el documento CSV como un String.
+     * @return String
+     */
+    public String obtenerContenidoTextoPlano() {
 
         StringBuilder builder = new StringBuilder();
 
@@ -127,6 +182,11 @@ public class DocumentoCSV {
 
     }
 
+    /**
+     * Este método exporta el objeto DocumentoCSV como un fichero csv. Dentro de si mismo llama al método obtenerContenidoTextoPlano()
+     * @param destino
+     * @throws IOException
+     */
     public void exportarComoArchivo(File destino) throws IOException {
 
         FileWriter writer = new FileWriter(destino);
