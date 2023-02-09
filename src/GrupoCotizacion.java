@@ -1,5 +1,4 @@
 /**
- * 
  * Define un grupo de cotización, con id y sueldo_base.
  * 
  * @author Pedro Marín Sanchis

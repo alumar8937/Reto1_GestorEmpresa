@@ -282,6 +282,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * @deprecated
+     * @param avisarSiExiste
+     * @param mensaje
+     * @return
+     */
     private static File escogerArchivo(boolean avisarSiExiste, String mensaje) { // Author: Pedro Marín Sanchis
 
         boolean entradaCorrecta = false;

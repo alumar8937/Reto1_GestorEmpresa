@@ -1,13 +1,12 @@
 /**
- * 
  * Define tanto la información personal de un empleado como la informacion.
  * 
  * @author Pedro Marín Sanchis
  * @version V.1
  * @since 18/12/2022
  */
-
 public class Empleado {
+    
     final private int id_usuario;
 
     private int id_departamento;
