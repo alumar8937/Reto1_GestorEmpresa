@@ -25,6 +25,16 @@ public class GestorEmpresa {
     final private static String cabecera_Grupo_Cotizacion = "Id;sueldo_base";
     final private static String cabecera_Hores_extres = "id_usuario;hora";
 
+    /**
+     * Metodo main donde va mostrando el menu y limpia la pantalla siempre que la condicion de salida no sea true.
+     * Inicialmente importa los datos.
+     * En el caso de que sea true esportara los datos.
+     * {@link GestorEmpresa#importarDatos()}.
+     * {@link GestorEmpresa#limpiarPantalla}.
+     * {@link GestorEmpresa#mostrarMenu()}.
+     * {@link GestorEmpresa#exportarDatos()}.
+     * @param args
+     */
     public static void main(String[] args) { // Author: Raúl Simarro Navarro
 
         importarDatos();
@@ -73,6 +83,13 @@ public class GestorEmpresa {
         limpiarPantalla();
     }
 
+    /**
+     * En este metodo mostrara un mensaje por pantalla y pedira al usuario una opcion en el caso de ser Y devolvera
+     * true en el caso contrario N false.
+     * {@link GestorEmpresa#limpiarPantalla()}.
+     * @param mensaje
+     * @return boolean
+     */
     private static boolean mostrarPeticionDeConfirmacion(String mensaje) { // Author: Raúl Simarro Navarro, Pedro Marín Sanchis
 
         while (true) {
@@ -90,6 +107,17 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Este metodo es el encargado de mostrar el menu y permite la seleccion de cada opcion con un pequeño texto
+     * informando de lo que realizara al elegir cada una de las opciones.
+     * Este menu se ha construido a partir de varios submenus.
+     * {@link GestorEmpresa#leerEntero}
+     * {@link GestorEmpresa#menuEmpleado()}
+     * {@link GestorEmpresa#menuDepartamento()}
+     * {@link GestorEmpresa#menuGruposCot()}
+     * {@link GestorEmpresa#costeSalarial}
+     * {@link GestorEmpresa#mostrarMensaje}
+     */
     private static void mostrarMenu() { // Author: Raúl Simarro Navarro, David Serna
 
         String textoMenu = "1.-Empleados \n2.-Departamentos \n3.-Grupos Cotización \n4.-Coste salarial empresa \n" +
@@ -205,7 +233,7 @@ public class GestorEmpresa {
 
             switch(leerEntero(textoMenu)){
                 case 1:
-                    mostrarMensaje("En este grupo de cotización hay: " + contarEmpleadosGrupoCot(leerEntero("Introduce la id del grupo de cotización:"))+ " empleados.");
+                    mostrarMensaje("En este grupo de cotización hay: " + contarEmpleadosGrupoCotizacion(leerEntero("Introduce la id del grupo de cotización:"))+ " empleados.");
                     break;
                 case 2:
                     horasExtraGrupoCotizacion();
@@ -214,7 +242,7 @@ public class GestorEmpresa {
                     agregarDatosGrupoCotizacion();
                     break;
                 case 4:
-                    eliminarGrupoCot();
+                    eliminarGrupoCotizacion();
                     break;
                 case 5:
                     salir = true;
@@ -400,7 +428,7 @@ public class GestorEmpresa {
 
         } else {
 
-            mostrarError("Los archivos no son bruh válidos.");
+            mostrarError("Los archivos no son válidos.");
 
         }
 
@@ -500,8 +528,8 @@ public class GestorEmpresa {
 
         if (departamentos.size() > 0) {
 
-            for (GrupoCotizacion i: gruposCotizacion) {
-                documento.anyadirTuple(new String[]{Integer.toString(i.getId()), Integer.toString(i.getSueldo_base())});
+            for (GrupoCotizacion grupoCotizacion: gruposCotizacion) {
+                documento.anyadirTuple(new String[]{Integer.toString(grupoCotizacion.getId()), Integer.toString(grupoCotizacion.getSueldo_base())});
             }
 
         } else {
@@ -609,10 +637,10 @@ public class GestorEmpresa {
     private static void costeSalarial() { //Author: Javier Blasco
         int costeTotal = 0;
         try {
-            for(GrupoCotizacion coste : gruposCotizacion) {
+            for(GrupoCotizacion grupoCotizacion : gruposCotizacion) {
                 for (Empleado empleado : empleados) {
-                    if (coste.getId() == empleado.getGrupo_Cotizacion()) {
-                        costeTotal = costeTotal + coste.getSueldo_base();
+                    if (grupoCotizacion.getId() == empleado.getGrupo_Cotizacion()) {
+                        costeTotal = costeTotal + grupoCotizacion.getSueldo_base();
                     }
                 }
             }
@@ -626,9 +654,9 @@ public class GestorEmpresa {
 
         int horasTotales = 0;
         int id = leerEntero("Introduzca la ID del grupo de cotización:");
-        for (GrupoCotizacion i : gruposCotizacion) {
+        for (GrupoCotizacion grupoCotizacion : gruposCotizacion) {
 
-            if(i.getId() == id) {
+            if(grupoCotizacion.getId() == id) {
 
                 for(Empleado empleado : empleados) {
                     if(id == empleado.getGrupo_Cotizacion()){
@@ -724,21 +752,21 @@ public class GestorEmpresa {
     private static void agregarDatosGrupoCotizacion() { //Author: David Serna
         try {
             boolean check = false;
-            int sueldo_grupcot = leerEntero("Introduzca el sueldo del base del grupo cotización: ");
+            int sueldo_grupcotizacion = leerEntero("Introduzca el sueldo del base del grupo cotización: ");
 
 
-            if(!mostrarPeticionDeConfirmacion("Sueldo base del grupo_cot: " + sueldo_grupcot)) {
+            if(!mostrarPeticionDeConfirmacion("Sueldo base del grupo_cot: " + sueldo_grupcotizacion)) {
                 return;
             }
 
             int indicemax = 0;
-            for(GrupoCotizacion grupo_cot: gruposCotizacion){
-                if(grupo_cot.getId() > indicemax){
-                    indicemax = grupo_cot.getId();
+            for(GrupoCotizacion grupoCotizacion: gruposCotizacion){
+                if(grupoCotizacion.getId() > indicemax){
+                    indicemax = grupoCotizacion.getId();
                 }
             }
 
-            gruposCotizacion.add(new GrupoCotizacion(indicemax + 1, sueldo_grupcot));
+            gruposCotizacion.add(new GrupoCotizacion(indicemax + 1, sueldo_grupcotizacion));
 
 
         } catch (Exception e) {
@@ -829,27 +857,27 @@ public class GestorEmpresa {
             return 0;
     }
 
-    private static void eliminarGrupoCot() { //Author: David Serna
+    private static void eliminarGrupoCotizacion() { //Author: David Serna
         int indice_grupocot = 0;
-        int grupo_cot = leerEntero("Introduzca la id del grupo de cotización que desea eliminar:");
+        int grupo_cotizacion = leerEntero("Introduzca la id del grupo de cotización que desea eliminar:");
 
-        if (!comprobarGrupoCot(grupo_cot)) {
+        if (!comprobarGrupoCot(grupo_cotizacion)) {
             mostrarMensaje("La id introducida no existe.");
             return;
         }
 
-        int contar_empleados = contarEmpleadosGrupoCot(grupo_cot);
+        int contar_empleados = contarEmpleadosGrupoCotizacion(grupo_cotizacion);
 
         if (contar_empleados != 0){
             mostrarMensaje("Tienes " + contar_empleados + " empleados en el grupo de cotización "
-                    + grupo_cot + ", mientras tengas empleados no puedes eliminar el grupo de coti" +
+                    + grupo_cotizacion + ", mientras tengas empleados no puedes eliminar el grupo de coti" +
                     "zación.");
             return;
 
         }
 
         for (GrupoCotizacion grupocot : gruposCotizacion){
-            if(grupocot.getId() == grupo_cot){
+            if(grupocot.getId() == grupo_cotizacion){
                 indice_grupocot = gruposCotizacion.indexOf(grupocot);
             }
         }
@@ -857,10 +885,10 @@ public class GestorEmpresa {
         mostrarMensaje("Se ha eliminado el grupo de cotización correctamente.");
     }
 
-    private static int contarEmpleadosGrupoCot(int grupo_cot) { //Author: David Serna
+    private static int contarEmpleadosGrupoCotizacion(int grupo_cotizacion) { //Author: David Serna
         int contar_empleados = 0;
         for(Empleado empleado : empleados){
-            if(empleado.getGrupo_Cotizacion() == grupo_cot){
+            if(empleado.getGrupo_Cotizacion() == grupo_cotizacion){
                 contar_empleados++;
             }
         }
@@ -870,9 +898,9 @@ public class GestorEmpresa {
     private static boolean comprobarGrupoCot(int grupo_cot) { //Author: David Serna
         try {
 
-            for(GrupoCotizacion grupCot : gruposCotizacion){
+            for(GrupoCotizacion grupoCotizacion : gruposCotizacion){
 
-                if (grupCot.getId() == grupo_cot) {
+                if (grupoCotizacion.getId() == grupo_cot) {
                     return true;
                 }
 
