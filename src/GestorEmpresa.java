@@ -176,13 +176,13 @@ public class GestorEmpresa {
                     horasExtraDepartamento();
                     break;
                 case 3:
-                    agregarDep();
+                    agregarDepartamento();
                     break;
                 case 4:
-                    modificarDep();
+                    modificarDepartamento();
                     break;
                 case 5:
-                    eliminarDep();
+                    eliminarDepartamento();
                     break;
                 case 6:
                     salir = true;
@@ -648,7 +648,7 @@ public class GestorEmpresa {
 
     private static void horasExtraDepartamento() { //Author: Javier Blasco
         String departamento;
-        int id_dep = 0;
+        int id_departamento = 0;
         int horasTotales = 0;
         System.out.println("Introduzca el nombre del departamento:");
         try {
@@ -656,12 +656,12 @@ public class GestorEmpresa {
 
             for (Departamento dep : departamentos){
                 if(departamento.equals(dep.getNombre())){
-                    id_dep = dep.getId();
+                    id_departamento = dep.getId();
                 }
             }
 
             for(Empleado empleado : empleados){
-                if(id_dep == empleado.getId_departamento()){
+                if(id_departamento == empleado.getId_departamento()){
                     for(HoraExtra hora : horasExtras) {
                         if (empleado.getId_usuario() == hora.getId_usuario()) {
                             horasTotales = horasTotales + hora.getHoras();
@@ -677,7 +677,6 @@ public class GestorEmpresa {
 
     private static void agregarDatosUsuario(){ //Author: David Serna
         try {
-            boolean check = false;
             int id_departamento = leerEntero("Introduzca la id del departamento del empleado: ");
             String NIF = leerCadena("Introduzca el NIF del empleado: ").toUpperCase();
             String nombre = leerCadena("Introduzca el nombre del empleado: ").toUpperCase();
@@ -886,11 +885,17 @@ public class GestorEmpresa {
         }
     }
 
-    private static void agregarDep() { // Author: Pedro Marín Sanchis
+    /**
+     * Método que agrega un departamento
+     * {@link GestorEmpresa#comprobarDepartamento(int)}
+     * {@link GestorEmpresa#leerEntero(String)}
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
+    private static void agregarDepartamento() { // Author: Pedro Marín Sanchis
 
         int id = leerEntero("Introduzca la ID del departamento:");
 
-        if (!comprobarDep(id)) {
+        if (!comprobarDepartamento(id)) {
 
             departamentos.add(new Departamento(id, leerCadena("Introduzca el nombre del nuevo departamento:")));
 
@@ -902,11 +907,18 @@ public class GestorEmpresa {
 
     }
 
-    private static void modificarDep() { //Author: Pedro Marín Sanchis
+    /**
+     * Método que modifica un departamento
+     * {@link GestorEmpresa#comprobarDepartamento(int)}
+     * {@link GestorEmpresa#leerCadena(String)}
+     * {@link GestorEmpresa#leerEntero(String)}
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
+    private static void modificarDepartamento() { //Author: Pedro Marín Sanchis
 
         int id = leerEntero("Introduzca la ID del departamento:");
 
-        if (comprobarDep(id)) {
+        if (comprobarDepartamento(id)) {
 
             for (Departamento i: departamentos) {
 
@@ -926,22 +938,30 @@ public class GestorEmpresa {
 
     }
 
-    private static void eliminarDep() { //Author: David Serna
+    /**
+     * Método que elimina un departamento
+     * {@link GestorEmpresa#convertirNombreDepartamentoIdDepartamento(String)}
+     * {@link GestorEmpresa#comprobarDepartamento(int)}
+     * {@link GestorEmpresa#mostrarMensaje(String)}
+     * {@link GestorEmpresa#leerCadena(String)}
+     * {@link GestorEmpresa#contarEmpleadosDepartamento(int)}
+     */
+    private static void eliminarDepartamento() { //Author: David Serna
         int indice_dep = 0;
         String departamento = leerCadena("Introduzca el nombre del departamento que desea eliminar:");
-        int id_departamento =convertirNombreDepIdDep(departamento);
+        int id_departamento = convertirNombreDepartamentoIdDepartamento(departamento);
         if (id_departamento == 0){
             return;
         }
 
 
-        if (!comprobarDep(id_departamento)) {
+        if (!comprobarDepartamento(id_departamento)) {
             mostrarMensaje("El departamento introducido no existe.");
             return;
         }
 
 
-        int contar_empleados = contarEmpleadosDep(id_departamento);
+        int contar_empleados = contarEmpleadosDepartamento(id_departamento);
 
         if (contar_empleados != 0){
             mostrarMensaje("Tienes " + contar_empleados + " empleados en el departamento "
@@ -960,7 +980,13 @@ public class GestorEmpresa {
         mostrarMensaje("Se ha eliminado el departamento correctamente.");
 
     }
-    private static int convertirNombreDepIdDep(String departamento) { //Author: David Serna
+
+    /**
+     * Método que convierte un nombre de departamento a una id
+     * @param departamento
+     * @return la id del departamento que coincide con el nombre de este si existe
+     */
+    private static int convertirNombreDepartamentoIdDepartamento(String departamento) { //Author: David Serna
         for (Departamento dep : departamentos){
             if(dep.getNombre().equalsIgnoreCase(departamento)){
                 return dep.getId();
@@ -970,7 +996,12 @@ public class GestorEmpresa {
         return 0;
     }
 
-    private static int contarEmpleadosDep(int id_departamento) { //Author: David Serna
+    /**
+     *Método que cuenta la cantidad de empleados por departamento
+     * @param id_departamento
+     * @return la cantidad de empleados en ese departamento
+     */
+    private static int contarEmpleadosDepartamento(int id_departamento) { //Author: David Serna
         int contar_empleados = 0;
         for(Empleado empleado : empleados){
             if(empleado.getId_departamento() == id_departamento){
@@ -980,7 +1011,13 @@ public class GestorEmpresa {
         return contar_empleados;
     }
 
-    private static boolean comprobarDep(int id_departamento) { //Author: David Serna
+    /**
+     * Método que comprueba si una id de departamento existe
+     * {@link GestorEmpresa#mostrarError(String)}
+     * @param id_departamento
+     * @return devuelve verdadero o falso dependiendo de si existe
+     */
+    private static boolean comprobarDepartamento(int id_departamento) { //Author: David Serna
         try {
 
             for(Departamento departamento : departamentos){
