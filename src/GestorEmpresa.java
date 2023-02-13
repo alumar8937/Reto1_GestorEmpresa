@@ -3,6 +3,9 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
 
+/**
+ * @author Equipo_3
+ */
 public class GestorEmpresa {
 
     private static Boolean condicionDeSalida = false;
@@ -52,11 +55,21 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Este metodo es el encargado de leer la cadena de texto que se le pasa como parametro.
+     * @param mensaje
+     * @return inputValue.nextLine().
+     */
     private static String leerCadena(String mensaje) { //Author: David Serna
         System.out.println(mensaje);
         return inputValue.nextLine();
     }
 
+    /**
+     * Este metodo es el encargado de leer el entero que se le pasa como parametro.
+     * @param mensaje
+     * @return int
+     */
     private static int leerEntero(String mensaje) { //Author: David Serna
         System.out.println(mensaje);
         try {
@@ -68,14 +81,26 @@ public class GestorEmpresa {
         }
     }
 
+    /**
+     * Este metodo printea 50 lineas vacias que sirven como limpiador de la
+     * linea de comandos.
+     */
     private static void limpiarPantalla(){ // Author: Raúl Simarro Navarro
         System.out.print("\n".repeat(50));
     }
 
+    /**
+     * Se le pasa una cadena de texto como parametro y printea este como un error.
+     * @param mensaje
+     */
     private static void mostrarError(String mensaje) { // Author: Raúl Simarro Navarro
         mostrarMensaje("[Error]: " + mensaje);
     }
 
+    /**
+     * Muestra el mensaje que se le ha pasado como parametro.
+     * @param mensaje
+     */
     private static void mostrarMensaje(String mensaje) { // Author: Raúl Simarro Navarro
         limpiarPantalla();
         System.out.print(mensaje + "\nPulsa ENTER para continuar...");
@@ -111,6 +136,7 @@ public class GestorEmpresa {
      * Este metodo es el encargado de mostrar el menu y permite la seleccion de cada opcion con un pequeño texto
      * informando de lo que realizara al elegir cada una de las opciones.
      * Este menu se ha construido a partir de varios submenus.
+     * {@link GestorEmpresa#limpiarPantalla()}
      * {@link GestorEmpresa#leerEntero}
      * {@link GestorEmpresa#menuEmpleado()}
      * {@link GestorEmpresa#menuDepartamento()}
@@ -145,6 +171,18 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Este es el menu que cuenta con las opciones referidas a los empleados, el usuario selecciona la opcion
+     * mientras que esta sea una de las que aparecen no soltara el mensaje de error.
+     * {@link GestorEmpresa#limpiarPantalla()}
+     * {@link GestorEmpresa#leerEntero}
+     * {@link GestorEmpresa#obtenerDatosPersonalesID()}
+     * {@link GestorEmpresa#obtenerDatosEmpresaID()}
+     * {@link GestorEmpresa#agregarDatosUsuario()}
+     * {@link GestorEmpresa#modificarDatosPersonales()}
+     * {@link GestorEmpresa#modificarDatosEmpresa()}
+     * {@link GestorEmpresa#eliminarEmpleado()}
+     */
     private static void menuEmpleado() { //Author: David Serna
         salir = false;
         while(!salir){
@@ -185,6 +223,17 @@ public class GestorEmpresa {
         }
     }
 
+    /**
+     * Este es el menu que cuenta con las opciones referidas a los departamentos, el usuario selecciona la opcion
+     * mientras que esta sea una de las que aparecen no soltara el mensaje de error.
+     * {@link GestorEmpresa#limpiarPantalla()}
+     * {@link GestorEmpresa#leerEntero}
+     * {@link GestorEmpresa#consultarEmpleadosDepartamento()}
+     * {@link GestorEmpresa#horasExtraDepartamento()}
+     * {@link GestorEmpresa#agregarDepartamento()}
+     * {@link GestorEmpresa#modificarDepartamento()}
+     * {@link GestorEmpresa#eliminarDepartamento()}
+     */
     private static void menuDepartamento() { //Author: David Serna
         salir = false;
         while(!salir){
@@ -221,6 +270,15 @@ public class GestorEmpresa {
         }
     }
 
+    /**
+     * Este es el menu que cuenta con las opciones referidas a los grupos de cotizacion, el usuario selecciona la opcion
+     * mientras que esta sea una de las que aparecen no soltara el mensaje de error.
+     * {@link GestorEmpresa#limpiarPantalla()}
+     * {@link GestorEmpresa#leerEntero}
+     * {@link GestorEmpresa#horasExtraGrupoCotizacion()}
+     * {@link GestorEmpresa#agregarDatosGrupoCotizacion()}
+     * {@link GestorEmpresa#eliminarGrupoCotizacion()}
+     */
     private static void menuGruposCot() { //Author: David Serna
         salir = false;
         while(!salir){
@@ -253,6 +311,15 @@ public class GestorEmpresa {
         }
     }
 
+    /**
+     * En este metodo se importaran los datos de los documentos csv asignados a las tablas de
+     * la base de datos en la que se basa el programa.
+     * {@link GestorEmpresa#cargarCategorias(DocumentoCSV)}
+     * {@link GestorEmpresa#cargarEmpleados(DocumentoCSV, DocumentoCSV)}
+     * {@link GestorEmpresa#cargarDepartamentos(DocumentoCSV)}
+     * {@link GestorEmpresa#cargarGrupo_Cotizacion(DocumentoCSV)} 
+     * {@link GestorEmpresa#cargarHores_extres(DocumentoCSV)} 
+     */
     private static void importarDatos() { // Author: Pedro Marín Sanchis
 
         try {
@@ -267,6 +334,16 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Este metodo es el encargado de exportar los datos de los arrays que almacenan la informacion
+     * a su fichero csv correspondiente.
+     * {@link GestorEmpresa#crearCategoriaCSV()}
+     * {@link GestorEmpresa#crearDatos_EmpresaCSV()} 
+     * {@link GestorEmpresa#crearDatos_PersonalesCSV()} 
+     * {@link GestorEmpresa#crearDepartamentoCSV()} 
+     * {@link GestorEmpresa#crearGrupo_CotizacionCSV()} 
+     * {@link GestorEmpresa#crearHores_extresCSV()} 
+     */
     private static void exportarDatos() { // Author: Pedro Marín Sanchis
 
         try {
@@ -282,6 +359,14 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * En este metodo recojera dos parametros y a partir de ellos escojera el fichero que se le haya pasado
+     * como el parametro de mensaje y comprobara si este fichero ya esta cargado en caso de estarlo remplazara el
+     * existente.
+     * @param avisarSiExiste
+     * @param mensaje
+     * @return File
+     */
     private static File escogerArchivo(boolean avisarSiExiste, String mensaje) { // Author: Pedro Marín Sanchis
 
         boolean entradaCorrecta = false;
@@ -312,6 +397,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Carga la categoria de los ficheros csv importados dentro de un arraylist, en el caso de que
+     * no tanga campos soltara un error.
+     * @param Categoria
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void cargarCategorias(DocumentoCSV Categoria) { // Author: Pedro Marín Sanchis
 
         ArrayList<Categoria> lista = new ArrayList<>(1);
@@ -334,6 +425,13 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * A partir de los datos que se enquentran en los csv importados la informacion de estos la carga en un arraylist
+     * para su posterior uso.
+     * @param Datos_Empresa
+     * @param Datos_Personales
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void cargarEmpleados(DocumentoCSV Datos_Empresa, DocumentoCSV Datos_Personales) { // Author: Pedro Marín Sanchis
 
         ArrayList<Empleado> lista = new ArrayList<>(1);
@@ -368,6 +466,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * A partir de los datos que se enquentran en los csv importados la informacion de estos la carga en un arraylist
+     * para su posterior uso.
+     * @param Departamento
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void cargarDepartamentos(DocumentoCSV Departamento) { // Author: Pedro Marín Sanchis
 
         ArrayList<Departamento> lista = new ArrayList<>(1);
@@ -390,6 +494,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * A partir de los datos que se enquentran en los csv importados la informacion de estos la carga en un arraylist
+     * para su posterior uso.
+     * @param Grupo_Cotizacion
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void cargarGrupo_Cotizacion(DocumentoCSV Grupo_Cotizacion) { // Author: Pedro Marín Sanchis
 
         ArrayList<GrupoCotizacion> lista = new ArrayList<>(1);
@@ -412,6 +522,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * A partir de los datos que se enquentran en los csv importados la informacion de estos la carga en un arraylist
+     * para su posterior uso.
+     * @param Hores_extres
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void cargarHores_extres(DocumentoCSV Hores_extres) { // Author: Pedro Marín Sanchis
 
         ArrayList<HoraExtra> lista = new ArrayList<>(1);
