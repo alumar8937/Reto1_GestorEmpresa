@@ -1,5 +1,4 @@
 /**
- * 
  * Define una entrada en la tabla de horas extras. Tiene id_usuario y horas.
  * 
  * @author Pedro Marín Sanchis

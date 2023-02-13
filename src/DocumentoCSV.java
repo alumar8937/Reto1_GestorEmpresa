@@ -1,3 +1,10 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
 * DocumentoCSV es una clase para el tratamiento de archivos CSV, como argumentos para el constructor toma
 * Un File (archivo) y un String (delimitador). El propio constructor genera una estructura tal que:
@@ -13,14 +20,6 @@
 * @version V.1
 * @since 18/12/2022
 */
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class DocumentoCSV {
 
     final private String delimitador;
