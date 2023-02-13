@@ -1031,30 +1031,31 @@ public class GestorEmpresa {
     /**
      * Método que elimina un empleado si es posible
      * {@link GestorEmpresa#obtenerIDconNIF()}
+     * {@link GestorEmpresa#eliminarHorasExtraEmpleado(int)}
      */
     private static void eliminarEmpleado() { // Author: Pedro Marín Sanchis
 
         int id = obtenerIDconNIF();
-
-        for(int i = 0; i < empleados.size(); i++) {
-            
-            if (empleados.get(i).getId_usuario() == id) {
-
-                empleados.remove(i);
-
-                for (int j = 0; j < horasExtras.size(); j++) {
-
-                    if (horasExtras.get(j).getId_usuario() == id) {
-                        horasExtras.remove(j);
-                        return;
-                    }
-
-                }
-
-            }
-            
-        }
         
+        for(int i = 0; i < empleados.size(); i++) {
+            if (empleados.get(i).getId_usuario() == id) {
+                empleados.remove(i);
+                eliminarHorasExtraEmpleado(id);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Método que elimina las horas extras de un empleado
+     * @param id
+     */
+    private static void eliminarHorasExtraEmpleado(int id) {
+        for (int j = 0; j < horasExtras.size(); j++) {
+            if (horasExtras.get(j).getId_usuario() == id) {
+                horasExtras.remove(j);
+            }
+        }
     }
 
     /**
