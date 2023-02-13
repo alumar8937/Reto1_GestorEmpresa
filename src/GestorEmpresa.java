@@ -434,6 +434,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Método que crea un documento CSV con las categorias
+     * @return devuelve el documento CSV
+     * @throws IOException
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static DocumentoCSV crearCategoriaCSV() throws IOException { // Author: Pedro Marín Sanchis
 
         DocumentoCSV documento = new DocumentoCSV("", delimitador_CSV);
@@ -456,6 +462,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Método que crea un documento CSV con los datos empresariales del empleado
+     * @return devuelve el documento CSV
+     * @throws IOException
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static DocumentoCSV crearDatos_EmpresaCSV() throws IOException { // Author: Pedro Marin Sanchis
 
         DocumentoCSV documento = new DocumentoCSV("", delimitador_CSV);
@@ -478,6 +490,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Método que crea un documento CSV con los datos personales del empleado
+     * @return devuelve el documento CSV
+     * @throws IOException
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static DocumentoCSV crearDatos_PersonalesCSV() throws IOException { // Author: Pedro Marín Sanchis
 
         DocumentoCSV documento = new DocumentoCSV("", delimitador_CSV);
@@ -498,6 +516,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Método que crea el documento CSV con los departamentos
+     * @return devuelve el documento CSV
+     * @throws IOException
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static DocumentoCSV crearDepartamentoCSV() throws IOException { // Author: Pedro Marín Sanchis
 
         DocumentoCSV documento = new DocumentoCSV("", delimitador_CSV);
@@ -520,6 +544,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Método que crea el documento CSV con los grupos de cotización
+     * @return devuelve el documento CSV
+     * @throws IOException
+     * {@link GestorEmpresa#mostrarError(String)} 
+     */
     private static DocumentoCSV crearGrupo_CotizacionCSV() throws IOException { // Author: Pedro Marín Sanchis
 
         DocumentoCSV documento = new DocumentoCSV("", delimitador_CSV);
@@ -542,6 +572,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Método que crea el documento CSV de las horas extras
+     * @return devuelve el documento CSV
+     * @throws IOException
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static DocumentoCSV crearHores_extresCSV() throws IOException { // Author: Pedro Marín Sanchis
 
         DocumentoCSV documento = new DocumentoCSV("", delimitador_CSV);
@@ -564,6 +600,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Métoodo que saca los datos personales de un empleado según su ID
+     * {@link GestorEmpresa#leerEntero(String)}
+     * {@link GestorEmpresa#mostrarMensaje(String)}
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void obtenerDatosPersonalesID() { // Author: David Serna
 
         int id_pedido;
@@ -587,6 +629,12 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Métoodo que saca los datos empresariales de un empleado según su ID
+     * {@link GestorEmpresa#leerEntero(String)}
+     * {@link GestorEmpresa#mostrarMensaje(String)}
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void obtenerDatosEmpresaID() { //Author: Javier Blasco
         int id_solicitada;
 
@@ -607,6 +655,12 @@ public class GestorEmpresa {
         }
     }
 
+    /**
+     * Método que consulta la información de los empleados de un departamento en específico
+     * {@link GestorEmpresa#mostrarError(String)}
+     * {@link GestorEmpresa#leerCadena(String)}
+     * {@link GestorEmpresa#mostrarMensaje(String)}
+     */
     private static void consultarEmpleadosDepartamento() { //Author: David Serna
         String departamento;
         int id_dep = 0;
@@ -634,6 +688,11 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Método que calcula el coste salarial de la empresa
+     * {@link GestorEmpresa#mostrarMensaje(String)}
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void costeSalarial() { //Author: Javier Blasco
         int costeTotal = 0;
         try {
@@ -650,6 +709,10 @@ public class GestorEmpresa {
         }
     }
 
+    /**
+     * Método que devuelve las horas extras de un grupo de cotización
+     * {@link GestorEmpresa#mostrarMensaje(String)}
+     */
     private static void horasExtraGrupoCotizacion() { //Author: Pedro Marín Sanchis
 
         int horasTotales = 0;
@@ -674,6 +737,11 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Método que devuelve las horas extras de un departamento
+     * {@link GestorEmpresa#mostrarError(String)}
+     * {@link GestorEmpresa#mostrarMensaje(String)}
+     */
     private static void horasExtraDepartamento() { //Author: Javier Blasco
         String departamento;
         int id_departamento = 0;
@@ -703,6 +771,13 @@ public class GestorEmpresa {
         }
     }
 
+    /**
+     * Método que agrega un usuario mediante la solicitud de los datos personales y de empresa de este
+     * {@link GestorEmpresa#leerEntero(String)}
+     * {@link GestorEmpresa#leerCadena(String)}
+     * {@link GestorEmpresa#mostrarPeticionDeConfirmacion(String)}
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void agregarDatosUsuario(){ //Author: David Serna
         try {
             int id_departamento = leerEntero("Introduzca la id del departamento del empleado: ");
@@ -749,9 +824,14 @@ public class GestorEmpresa {
 
     }
 
+    /**
+     * Método que agrega un grupo de cotización nuevo
+     * {@link GestorEmpresa#mostrarPeticionDeConfirmacion(String)}
+     * {@link GestorEmpresa#leerEntero(String)}
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void agregarDatosGrupoCotizacion() { //Author: David Serna
         try {
-            boolean check = false;
             int sueldo_grupcotizacion = leerEntero("Introduzca el sueldo del base del grupo cotización: ");
 
 
@@ -776,6 +856,12 @@ public class GestorEmpresa {
         }
     }
 
+    /**
+     * Método que modifica los datos empresariales de un empleado
+     * {@link GestorEmpresa#leerEntero(String)}
+     * {@link GestorEmpresa#leerCadena(String)}
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void modificarDatosEmpresa() { //Author: Javier Blasco
         try {
             int id_usuario = leerEntero("Introduce la id del empleado al que quieres modificar.");
@@ -798,6 +884,12 @@ public class GestorEmpresa {
         }
     }
 
+    /**
+     * Método que modifica los datos personal de un empleado
+     * {@link GestorEmpresa#leerEntero(String)}
+     * {@link GestorEmpresa#leerCadena(String)}
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
     private static void modificarDatosPersonales() { //Author: Javier Blasco
         try {
             int id_usuario = leerEntero("Introduce la id del empleado al que quieres modificar.");
@@ -819,7 +911,11 @@ public class GestorEmpresa {
             mostrarError("Esta id no existe.");
         }
     }
-    
+
+    /**
+     * Método que elimina un empleado si es posible
+     * {@link GestorEmpresa#obtenerIDconNIF()}
+     */
     private static void eliminarEmpleado() { // Author: Pedro Marín Sanchis
 
         int id = obtenerIDconNIF();
@@ -845,6 +941,11 @@ public class GestorEmpresa {
         
     }
 
+    /**
+     * Método que obtiene el id del empleado mediante el NIF de este
+     * @return devuelve el ID del empleado
+     * {@link GestorEmpresa#leerCadena(String)}
+     */
     private static int obtenerIDconNIF() { // Author: Pedro Marín Sanchis
 
         String NIF = leerCadena("Introduzca el NIF del empleado a eliminar: ");
@@ -857,11 +958,18 @@ public class GestorEmpresa {
             return 0;
     }
 
+    /**
+     * Método que elimina un grupo de cotización si es posible
+     * {@link GestorEmpresa#mostrarMensaje(String)}
+     * {@link GestorEmpresa#leerEntero(String)}
+     * {@link GestorEmpresa#comprobarGrupoCotizacion(int)}
+     * {@link GestorEmpresa#contarEmpleadosGrupoCotizacion(int)}
+     */
     private static void eliminarGrupoCotizacion() { //Author: David Serna
         int indice_grupocot = 0;
         int grupo_cotizacion = leerEntero("Introduzca la id del grupo de cotización que desea eliminar:");
 
-        if (!comprobarGrupoCot(grupo_cotizacion)) {
+        if (!comprobarGrupoCotizacion(grupo_cotizacion)) {
             mostrarMensaje("La id introducida no existe.");
             return;
         }
@@ -885,6 +993,11 @@ public class GestorEmpresa {
         mostrarMensaje("Se ha eliminado el grupo de cotización correctamente.");
     }
 
+    /**
+     * Método que cuenta los empleados en un grupo de cotizacion
+     * @param grupo_cotizacion
+     * @return devuelve la cantidad de empleados en el grupo de cotización
+     */
     private static int contarEmpleadosGrupoCotizacion(int grupo_cotizacion) { //Author: David Serna
         int contar_empleados = 0;
         for(Empleado empleado : empleados){
@@ -895,12 +1008,18 @@ public class GestorEmpresa {
         return contar_empleados;
     }
 
-    private static boolean comprobarGrupoCot(int grupo_cot) { //Author: David Serna
+    /**
+     * Método que comprueba si el grupo de cotización existe
+     * @param grupo_cotizacion
+     * @return devuelve true o false dependiendo de si existe el grupo de cotización
+     * {@link GestorEmpresa#mostrarError(String)}
+     */
+    private static boolean comprobarGrupoCotizacion(int grupo_cotizacion) { //Author: David Serna
         try {
 
             for(GrupoCotizacion grupoCotizacion : gruposCotizacion){
 
-                if (grupoCotizacion.getId() == grupo_cot) {
+                if (grupoCotizacion.getId() == grupo_cotizacion) {
                     return true;
                 }
 
